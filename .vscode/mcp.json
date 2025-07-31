@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "code-gen__server": {
+        "command": "python",
+        "args": [
+          "C:\\xx\\rag\\server.py"
+        ]
+    }
+  }
+}

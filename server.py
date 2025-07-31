@@ -1,6 +1,4 @@
 from mcp.server.fastmcp import FastMCP
-import httpx
-import asyncio
 from app.graph import LLMNodeGraph
 
 
@@ -21,41 +19,11 @@ def get_guide_code(user_input: str):
         str: 以代码块格式返回的规范化代码。
     """
 
-    # result = graph.invoke({ "question": user_input})
+    result = graph.invoke({ "question": user_input})
 
-
-    # return result['messages'][0].content
-
-    # try:
-    #     async with httpx.AsyncClient() as client:
-    #         response = await client.get(
-    #             "http://152.136.45.29:8008/stream",
-    #             params={"user_input": user_input}
-    #         )
-    #     if response.status_code == 200:
-    #         data = response.json()
-    #         return data
-    #     else:
-    #         return None
-    try:
-        with httpx.Client() as client:
-            response = client.get(
-                "http://152.136.45.29:8008/stream",
-                params={"user_input": user_input}
-            )
-            print(response.text)
-
-        if response.status_code == 200:
-            return response.text
-        else:
-            return None
-    except Exception as e:
-        return f'服务器调用失败: {str(e)}'
-
+    return result['messages'].content
 
 
 if __name__ == "__main__":
     print('code-gen__server => start')
     mcp.run(transport='stdio')
-    # print("✅ MCP 工具服务启动中 (http)...")
-    # mcp.run(transport="http", host="127.0.0.1", port=9010)

@@ -1,7 +1,7 @@
 from langchain_openai import ChatOpenAI
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import DashScopeEmbeddings
 from typing import List
-from app.config import llm
+from app.config import llm, embedding
 
 class LLM():
 
@@ -15,27 +15,20 @@ class LLM():
         
         if (type == 'qwen'):
             return ChatOpenAI(
-                openai_api_key=llm.get("openai_api_key"),
-                openai_api_base=llm.get("openai_api_base"),
+                openai_api_key=llm.get("api_key"),
+                openai_api_base=llm.get("api_base"),
                 model_name=llm.get("model_name"),
                 request_timeout=10,
                 streaming=True
             )
         elif (type == 'emdeddings'):
-            return OpenAIEmbeddings(
-                openai_api_key=llm.get("openai_api_key"),
-                openai_api_base=llm.get("openai_api_base"),
-                model="text-embedding-v4",
-                dimensions=1024,
-                model_kwargs={
-                    "encoding_format": "float",
-                },
-                request_timeout=60
+            return DashScopeEmbeddings(
+                dashscope_api_key=embedding.get("api_key"),
+                model=embedding.get("model_name")
             )
 
     def ask(self):
-
-        print('\n selected ask llm')
+        print('selected ask llm')
         return self.config('qwen')
     
     def embeddings(self):

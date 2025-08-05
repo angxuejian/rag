@@ -1,9 +1,9 @@
 {
   "servers": {
-    "code-gen__server": {
+    "rag__server": {
         "command": "python",
         "args": [
-          "C:\\xx\\rag\\server.py"
+          "PATH\\rag\\mcp\\server.py"
         ]
     }
   }

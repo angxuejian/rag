@@ -36,6 +36,5 @@ class LLM():
         return self.config('emdeddings')
 
     def ask_tools(self, tools: List):
-
         print('selected ask tools llm')
         return self.config('qwen').bind_tools(tools)

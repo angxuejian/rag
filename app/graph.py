@@ -7,6 +7,8 @@ from app.llm import LLM
 from app.faiss import VECTOR_FAISS
 from PIL import Image
 import io
+from http import HTTPStatus
+
 
 llm = LLM()
 vector_faiss = VECTOR_FAISS()
@@ -36,7 +38,7 @@ class LLMNodeGraph():
         ])
         
         content = result.content
-        print("识别用户意图类型：", content)
+        # print("识别用户意图类型：", content)
         
         return state.model_copy(update={"type": content})
     
@@ -49,10 +51,17 @@ class LLMNodeGraph():
 
     
     def _generateVuePrompt(self, state: State):
-        results = vector_faiss.similarity_search(state.question)
+        documents = vector_faiss.similarity_search(state.question)
+
+        str_list = [item.page_content for item in documents]
+        resp = llm.rerank(query=state.question, documents=str_list)
+
+        if resp.status_code == HTTPStatus.OK:
+            results = [documents[item.index] for item in resp.output.results]
+        else:
+            results = documents
 
         p = ''
-        print(results)
         for i, doc in enumerate(results, 1):
             content = doc.page_content.strip()
             meta = doc.metadata
@@ -61,7 +70,7 @@ class LLMNodeGraph():
             p += f"--- 段落 {i} ---\n{content}\n{origin}\n\n"
 
         prompt = VUE_PROMP.format(content=p)
-        # print('Vue的prompt：', prompt)
+        print('Vue的prompt：', prompt)
 
         return state.model_copy(update={"prompt": prompt})
 

@@ -12,3 +12,7 @@ embedding = {
     "model_name": "text-embedding-v4"
 }
 
+rerank = {
+    "api_key": "YOUR_API_KEY",
+    "model_name": "gte-rerank-v2"
+}

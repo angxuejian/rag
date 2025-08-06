@@ -3,7 +3,7 @@
     "rag__server": {
         "command": "python",
         "args": [
-          "PATH\\rag\\mcp\\server.py"
+          "YOUR_LOCAL_PATH\\rag\\mcp\\server.py"
         ]
     }
   }

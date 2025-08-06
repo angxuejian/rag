@@ -2,6 +2,9 @@ from app.text_splitter import TextSplitter
 from app.faiss import VECTOR_FAISS
 import os
 
+# os.environ["http_proxy"] = "http://0.0.0.0:8080"
+# os.environ["https_proxy"] = "http://0.0.0.0:8080"
+
 def resolve_path(path: str):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(current_dir, path)
